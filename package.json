@@ -9,7 +9,8 @@
 		"start": "rm -rf dist && tsup && node dist/index.js",
 		"dev": "tsup --watch && node dist/index.js",
 		"format": "biome check . --write",
-		"lint": "biome lint ."
+		"lint": "biome lint .",
+		"agent": "tsx src/agent.ts"
 	},
 	"keywords": [],
 	"author": "",
@@ -23,6 +24,7 @@
 		"typescript": "^5.5.4"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^1.9.4"
+		"@biomejs/biome": "^1.9.4",
+		"tsx": "^4.19.1"
 	}
 }

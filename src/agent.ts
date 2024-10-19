@@ -1,4 +1,6 @@
 import { FunctionTool, ReActAgent } from "llamaindex";
+
+// Import `shared` module to allow for tool calls on the configured LLM
 import "./shared";
 
 const sumNumbers = ({ a, b }: { a: number; b: number }) => {

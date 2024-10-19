@@ -22,7 +22,7 @@ importers:
         version: 0.7.0(@aws-sdk/client-sso-oidc@3.675.0(@aws-sdk/client-sts@3.675.0))(@aws-sdk/credential-providers@3.675.0(@aws-sdk/client-sso-oidc@3.675.0(@aws-sdk/client-sts@3.675.0)))(@notionhq/client@2.2.15(encoding@0.1.13))(@xenova/transformers@2.17.2)(encoding@0.1.13)(typescript@5.6.3)
       tsup:
         specifier: ^8.3.0
-        version: 8.3.0(typescript@5.6.3)
+        version: 8.3.0(tsx@4.19.1)(typescript@5.6.3)
       typescript:
         specifier: ^5.5.4
         version: 5.6.3
@@ -30,6 +30,9 @@ importers:
       '@biomejs/biome':
         specifier: ^1.9.4
         version: 1.9.4
+      tsx:
+        specifier: ^4.19.1
+        version: 4.19.1
 
 packages:
 
@@ -1489,6 +1492,9 @@ packages:
     resolution: {integrity: sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg==}
     engines: {node: '>=10'}
 
+  get-tsconfig@4.8.1:
+    resolution: {integrity: sha512-k9PN+cFBmaLWtVz29SkUoqU5O0slLuHJXt/2P+tMVFT+phsSGXGkp9t3rQIqdz0e+06EHNGs3oM6ZX1s2zHxRg==}
+
   github-from-package@0.0.0:
     resolution: {integrity: sha512-SyHy3T1v2NUXn29OsWdxmK6RwHD+vkj3v8en8AOBZ1wBQ/hCAQ5bAQTD02kW4W9tUp/3Qh6J8r9EvntiyCmOOw==}
 
@@ -2182,6 +2188,9 @@ packages:
     resolution: {integrity: sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==}
     engines: {node: '>=8'}
 
+  resolve-pkg-maps@1.0.0:
+    resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
+
   rfdc@1.4.1:
     resolution: {integrity: sha512-q1b3N5QkRUWUl7iyylaaj3kOpIT0N2i9MqIEQXP73GVsN9cw3fdx8X63cEmWhJGi2PPCF23Ijp7ktmd39rawIA==}
 
@@ -2441,6 +2450,11 @@ packages:
         optional: true
       typescript:
         optional: true
+
+  tsx@4.19.1:
+    resolution: {integrity: sha512-0flMz1lh74BR4wOvBjuh9olbnwqCPc35OOlfyzHba0Dc+QNUeWX/Gq2YTbnwcWPO3BMd8fkzRVrHcsR+a7z7rA==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
 
   tunnel-agent@0.6.0:
     resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}
@@ -4567,6 +4581,10 @@ snapshots:
 
   get-stream@6.0.1: {}
 
+  get-tsconfig@4.8.1:
+    dependencies:
+      resolve-pkg-maps: 1.0.0
+
   github-from-package@0.0.0: {}
 
   glob-parent@5.1.2:
@@ -5202,9 +5220,11 @@ snapshots:
     dependencies:
       agentkeepalive: 4.5.0
 
-  postcss-load-config@6.0.1:
+  postcss-load-config@6.0.1(tsx@4.19.1):
     dependencies:
       lilconfig: 3.1.2
+    optionalDependencies:
+      tsx: 4.19.1
 
   postgres-array@3.0.2: {}
 
@@ -5357,6 +5377,8 @@ snapshots:
   requires-port@1.0.0: {}
 
   resolve-from@5.0.0: {}
+
+  resolve-pkg-maps@1.0.0: {}
 
   rfdc@1.4.1: {}
 
@@ -5650,7 +5672,7 @@ snapshots:
 
   tslib@2.8.0: {}
 
-  tsup@8.3.0(typescript@5.6.3):
+  tsup@8.3.0(tsx@4.19.1)(typescript@5.6.3):
     dependencies:
       bundle-require: 5.0.0(esbuild@0.23.1)
       cac: 6.7.14
@@ -5661,7 +5683,7 @@ snapshots:
       execa: 5.1.1
       joycon: 3.1.1
       picocolors: 1.1.1
-      postcss-load-config: 6.0.1
+      postcss-load-config: 6.0.1(tsx@4.19.1)
       resolve-from: 5.0.0
       rollup: 4.24.0
       source-map: 0.8.0-beta.0
@@ -5675,6 +5697,13 @@ snapshots:
       - supports-color
       - tsx
       - yaml
+
+  tsx@4.19.1:
+    dependencies:
+      esbuild: 0.23.1
+      get-tsconfig: 4.8.1
+    optionalDependencies:
+      fsevents: 2.3.3
 
   tunnel-agent@0.6.0:
     dependencies:
