@@ -6,7 +6,7 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"include": ["src/**/*.{js,ts,jsx,tsx}"],
+		"include": ["src/**/*.ts"],
 		"ignore": ["**/node_modules", "**/dist"]
 	},
 	"formatter": {
