@@ -1,0 +1,43 @@
+# Dependency directories
+node_modules/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Output of 'npm run build' or 'pnpm run build'
+dist/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# pnpm store
+.pnpm-store/
+
+# tsup
+.tsup/
+
+# Optional: Uncomment if you're using Jest for testing
+# coverage/
+
+storage/
