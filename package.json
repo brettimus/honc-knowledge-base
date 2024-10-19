@@ -10,7 +10,8 @@
 		"dev": "tsup --watch && node dist/index.js",
 		"format": "biome check . --write",
 		"lint": "biome lint .",
-		"agent": "tsx src/agent.ts"
+		"agent": "tsx src/agent.ts",
+		"typecheck": "tsc --noEmit"
 	},
 	"keywords": [],
 	"author": "",

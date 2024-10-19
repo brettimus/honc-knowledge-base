@@ -27,6 +27,7 @@ const tool = FunctionTool.from(sumNumbers, {
 
 const tools = [tool];
 
+// NOTE - This does not work with llama3.1 locally
 export async function testAgent() {
 	const agent = new ReActAgent({
 		tools,

@@ -56,6 +56,19 @@ export async function createVectorIndex(
 	return vectorIndex;
 }
 
+export async function loadVectorIndex(storageDir: string) {
+	const storageContext = await storageContextFromDefaults({
+		persistDir: storageDir,
+	});
+	if (!storageContext.vectorStores.TEXT) {
+		throw new Error("No vector store loaded");
+	}
+	const vectorIndex = await VectorStoreIndex.fromVectorStores(
+		storageContext.vectorStores,
+	);
+	return vectorIndex;
+}
+
 export async function searchStore(
 	vectorIndex: VectorStoreIndex,
 	query: string,
