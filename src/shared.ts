@@ -39,6 +39,9 @@ Settings.callbackManager.on("llm-tool-result", (event) => {
 export const filterMdxFiles = (documents: Document[]) =>
 	documents.filter((doc) => doc.metadata.file_name?.endsWith(".mdx"));
 
+export const filterJsonFiles = (documents: Document[]) =>
+	documents.filter((doc) => doc.metadata.file_name?.endsWith(".json"));
+
 export async function loadDocuments(
 	directory: string,
 	filter: (d: Document[]) => Document[],
