@@ -100,8 +100,6 @@ async function main() {
 	]);
 
 	// Generate API routes
-	// TODO:
-	// - Extract the wrangler bindings to use
 	const apiRoutesStartTime = Date.now();
 	const apiRoutes = await generateApiRoutes({
 		dbSchema: dbSchema.dbSchemaTs,
@@ -121,7 +119,7 @@ async function main() {
 	console.log(`Run completed. Trace ID: ${getCurrentTraceId()}`);
 }
 
-// NOTE - First pass, using vercel ai example
+// NOTE - First pass, using vercel ai example, *not in use*
 export async function quickTerminalApp() {
 	while (true) {
 		const userInput = await terminal.question("You: ");
