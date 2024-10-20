@@ -9,7 +9,11 @@ function generateTraceId(appName = "app"): string {
 }
 
 export function initializeTraceId(appName?: string): string {
-	currentTraceId = generateTraceId(appName);
+	let modifiedAppName = appName;
+	if (appName) {
+		modifiedAppName = appName.toLowerCase().replace(/\s+/g, "-").slice(0, 20);
+	}
+	currentTraceId = generateTraceId(modifiedAppName);
 	return currentTraceId;
 }
 
