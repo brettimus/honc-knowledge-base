@@ -1,10 +1,13 @@
 # Honc Knowledge Base
 
-This is a basic ingestion of the Drizzle and Cloudflare documentation into a simple local (on disk) vector store.
+
+## `rag` folder
+
+This is a set of utilities for basic ingestion of the Drizzle and Cloudflare documentation into a simple local (on disk) vector store.
 
 It's a testing ground.
 
-You can use it with local ollama or with openai.
+You can query the data with local ollama or with openai.
 
 To improve:
 

@@ -9,6 +9,8 @@
 		"codegen": "tsx src/code-gen/index.ts",
 		"trace": "tsx src/code-gen/utils/scripts/latest-trace.ts",
 		"index:cloudflare": "tsx src/rag/scripts/index-cloudflare.ts",
+		"index:drizzle": "tsx src/rag/scripts/index-drizzle.ts",
+		"r2": "tsx src/rag/scripts/r2-test.ts",
 		"start": "rm -rf dist && tsup && node dist/index.js",
 		"dev": "tsup --watch && node dist/index.js",
 		"format": "biome check . --write",
