@@ -34,7 +34,7 @@ enabled = true
 # binding = "AI"
 `.trim();
 
-// TODO - We can actually do this without an LLM if Durable Objects are not involved in the bindings
+// TODO - We can actually do this without an LLM
 export async function generateWranglerConfig(
 	bindings: Array<string>,
 	example = TEMPLATE_WRANGLER_TOML,

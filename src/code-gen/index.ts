@@ -30,6 +30,8 @@ async function main() {
 	// Get user's idea
 	const idea = await terminal.question("What is your idea for an api?");
 
+	console.log("Planning your api... This may take a few seconds!");
+
 	// Create plan for the api
 	const startTime = Date.now();
 	const planStartTime = Date.now();
@@ -67,7 +69,7 @@ async function main() {
 	const seedStartTime = Date.now();
 	const wranglerStartTime = Date.now();
 	await Promise.all([
-		// TODO - We can actually do this without an LLM if Durable Objects are not involved
+		// TODO - We can actually do this without an LLM
 		generateWranglerConfig(plan?.cloudflareBindings?.bindings ?? []).then(
 			async (wranglerConfig) => {
 				timings.generateWranglerConfig = Date.now() - wranglerStartTime;

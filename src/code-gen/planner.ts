@@ -54,13 +54,13 @@ ${idea}
 					reasoning: z.string(),
 					bindings: z.array(z.enum(["KV", "R2", "AI", "Durable Objects"])),
 				})
-				.nullish(),
+				.nullable(),
 			dependencies: z
 				.object({
 					reasoning: z.string(),
 					dependencies: z.array(z.string()),
 				})
-				.nullish(),
+				.nullable(),
 			// TODO - Handle case where idea is nonsense
 		}),
 		prompt: PROMPT,
