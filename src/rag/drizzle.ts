@@ -1,4 +1,5 @@
-import { dirname, join } from "node:path";
+import fs from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { VectorStoreIndex } from "llamaindex";
 import { STORAGE_DIR } from "./constants";
@@ -15,15 +16,26 @@ const __dirname = dirname(__filename);
 
 export async function createDrizzleVectorIndex() {
 	// Path to drizzle docs directory
-	const drizzleDocsDirectory = join(
-		__dirname,
-		"..",
-		"drizzle-orm-docs",
-		"src",
-		"content",
-		"documentation",
-		"docs",
+	const drizzleDocsDirectory = resolve(
+		join(
+			__dirname,
+			"..",
+			"..",
+			"..",
+			"cv-codegen-hackathon",
+			"drizzle-orm-docs",
+			"src",
+			"content",
+			"documentation",
+			"docs",
+		),
 	);
+
+	if (!fs.existsSync(drizzleDocsDirectory)) {
+		throw new Error(
+			`Drizzle docs directory does not exist: ${drizzleDocsDirectory}`,
+		);
+	}
 
 	const documents = await loadDocuments(drizzleDocsDirectory, filterMdxFiles);
 	const vectorIndex = await createVectorIndex(documents, STORAGE_DIR);

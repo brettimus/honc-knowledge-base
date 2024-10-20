@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { dirname } from "node:path";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
 	type Document,
@@ -20,7 +20,9 @@ import { CloudflareMetadataAdder } from "./transformations";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const cloudflareDocsDir = `${__dirname}/../../cloudflare-docs`;
+const cloudflareDocsDir = resolve(
+	`${__dirname}/../../../cv-codegen-hackathon/cloudflare-docs`,
+);
 
 // Array of directories to load documents from
 const docsDirectories = [
@@ -62,6 +64,12 @@ const docsDirectories = [
 ];
 
 export async function createCloudflareVectorIndex() {
+	if (!fs.existsSync(cloudflareDocsDir)) {
+		throw new Error(
+			`Cloudflare docs directory does not exist: ${cloudflareDocsDir}`,
+		);
+	}
+
 	const documents: Document[] = [];
 	for (const dir of docsDirectories) {
 		const dirPath = dir.path;
