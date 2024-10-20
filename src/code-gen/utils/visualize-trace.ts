@@ -26,6 +26,12 @@ export async function visualizeTrace(traceId: string): Promise<void> {
 			console.log(
 				highlight(content, { language: "typescript", theme: "vscode-dark" }),
 			);
+		} else if (file.endsWith(".toml")) {
+			console.log(
+				highlight(content, { language: "toml", theme: "vscode-dark" }),
+			);
+		} else {
+			console.log(content);
 		}
 	}
 }

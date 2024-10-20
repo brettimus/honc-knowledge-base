@@ -31,6 +31,8 @@ Do not include D1 as a Cloudflare binding, I already have it installed.
 
 If you want to use validation, use the Zod typescript library.
 
+If you think you'll need blob storage, e.g., for images or files, use Cloudflare R2.
+
 Do not implement authentication unless specifically asked for.
 
 Structure your response according to the schema provided.
