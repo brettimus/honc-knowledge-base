@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Document, VectorStoreIndex } from "llamaindex";
 import { STORAGE_DIR } from "./constants";

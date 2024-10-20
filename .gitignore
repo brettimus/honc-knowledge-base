@@ -1,3 +1,9 @@
+# llamaindex local storage
+storage/
+
+# hand-baked chain outputs
+outputs/
+
 # Dependency directories
 node_modules/
 
@@ -39,5 +45,3 @@ Thumbs.db
 
 # Optional: Uncomment if you're using Jest for testing
 # coverage/
-
-storage/
