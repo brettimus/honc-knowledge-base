@@ -22,9 +22,14 @@ const terminal = readline.createInterface({
 const messages: CoreMessage[] = [];
 
 async function main() {
+	const timings: { [key: string]: number } = {};
+	const startTime = Date.now();
+
 	const idea = await terminal.question("What is your idea for an api?");
 
+	const planStartTime = Date.now();
 	const plan = await generatePlan(idea);
+	timings.generatePlan = Date.now() - planStartTime;
 
 	const traceId = initializeTraceId(plan.appName);
 	console.log(`Starting new run with trace ID: ${traceId}`);
@@ -34,7 +39,9 @@ async function main() {
 
 	await saveOutput("01-initial-plan", plan);
 
+	const schemaStartTime = Date.now();
 	const dbSchema = await generateSchema(plan.databaseSchema);
+	timings.generateSchema = Date.now() - schemaStartTime;
 
 	await saveOutput("02-db-schema.ts", dbSchema.dbSchemaTs);
 
@@ -49,6 +56,7 @@ async function main() {
 	//   * Install instructions
 
 	// NOTE: These are parallel to reduce overall latency
+	const parallelStartTime = Date.now();
 	const [apiRoutes, seedFile] = await Promise.all([
 		generateApiRoutes({
 			dbSchema: dbSchema.dbSchemaTs,
@@ -58,12 +66,28 @@ async function main() {
 			dbSchema: dbSchema.dbSchemaTs,
 		}),
 	]);
+	timings.generateApiRoutes = Date.now() - parallelStartTime;
+	timings.generateSeed = Date.now() - parallelStartTime;
 
 	await saveOutput("03-api-routes.ts", apiRoutes.indexTs);
 	await saveOutput("04-seed.ts", seedFile.seedTs);
 	await visualizeTrace(traceId);
 
+	const totalTime = Date.now() - startTime;
+	timings.total = totalTime;
+
 	console.log(`Run completed. Trace ID: ${getCurrentTraceId()}`);
+	console.log("Timing data:");
+	console.log(
+		Object.entries(timings)
+			.map(
+				([key, value]) =>
+					`${key}: ${value < 1000 ? `${value}ms` : `${(value / 1000).toFixed(2)}s`}`,
+			)
+			.join("\n"),
+	);
+
+	await saveOutput("05-timings.json", JSON.stringify(timings, null, 2));
 }
 
 export async function quickTerminalApp() {
