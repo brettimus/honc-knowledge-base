@@ -62,6 +62,23 @@ export async function createVectorIndex(
 	const vectorIndex = await VectorStoreIndex.fromDocuments(documents, {
 		storageContext,
 	});
+
+	// Create Document object with essay
+	// const pipeline = new IngestionPipeline({
+	//   transformations: [
+	//     new SentenceSplitter({ chunkSize: 1024, chunkOverlap: 20 }),
+	//     new TitleExtractor(),
+	//     new OpenAIEmbedding(),
+	//   ],
+	//   vectorStore,
+	// });
+
+	// run the pipeline
+	// const nodes = await pipeline.run({ documents: [document] });
+
+	// create an index
+	// const index = VectorStoreIndex.fromVectorStore(vectorStore);
+
 	return vectorIndex;
 }
 

@@ -1,3 +1,5 @@
+import { STORAGE_DIR } from "@/constants";
+import { loadVectorIndex } from "@/shared";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { activeModel } from "./models";
@@ -41,7 +43,7 @@ export default instrument(app);
 export async function generateApiRoutes(
 	{ dbSchema, apiPlan }: { dbSchema: string; apiPlan: string },
 	example = TEMPLATE_EXAMPLE,
-) {
+): Promise<{ reasoning: string; indexTs: string }> {
 	const PROMPT = `
 You are a friendly, expert full-stack typescript engineer 
 and an API building assistant for apps that use Hono,
@@ -149,6 +151,43 @@ Think step by step in this order:
 	});
 
 	return result.object;
+}
+
+/**
+ * 
+ * @param query 
+export declare enum FilterOperator {
+    EQ = "==",// default operator (string, number)
+    IN = "in",// In array (string or number)
+    GT = ">",// greater than (number)
+    LT = "<",// less than (number)
+    NE = "!=",// not equal to (string, number)
+    GTE = ">=",// greater than or equal to (number)
+    LTE = "<=",// less than or equal to (number)
+    NIN = "nin",// Not in array (string or number)
+    ANY = "any",// Contains any (array of strings)
+    ALL = "all",// Contains all (array of strings)
+    TEXT_MATCH = "text_match",// full text match (allows you to search for a specific substring, token or phrase within the text field)
+    CONTAINS = "contains",// metadata array contains value (string or number)
+    IS_EMPTY = "is_empty"
+}
+ */
+export async function getContext(query: string) {
+	// Load the vector index from storage here
+	// If you haven't created an index yet, you gotta do that first!
+	const vectorIndex = await loadVectorIndex(STORAGE_DIR);
+	const retriever = vectorIndex.asRetriever({
+		similarityTopK: 3,
+		filters: {
+			filters: [{ key: "vendor", value: "cloudflare", operator: "==" }],
+		},
+	});
+
+	const nodesWithScore = await retriever.retrieve({ query });
+
+	// TODO!!!!
+
+	return nodesWithScore;
 }
 
 function getDrizzleOrmExamples() {

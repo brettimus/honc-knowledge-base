@@ -1,7 +1,11 @@
 import fs from "node:fs";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { Document, VectorStoreIndex } from "llamaindex";
+import {
+	type Document,
+	IngestionPipeline,
+	type VectorStoreIndex,
+} from "llamaindex";
 import { STORAGE_DIR } from "./constants";
 import {
 	createVectorIndex,
@@ -10,6 +14,7 @@ import {
 	loadDocuments,
 	queryStore,
 } from "./shared";
+import { CloudflareMetadataAdder } from "./transformations";
 
 // Create __dirname shim
 const __filename = fileURLToPath(import.meta.url);
@@ -22,30 +27,37 @@ const docsDirectories = [
 	{
 		path: `${cloudflareDocsDir}/src/content/workers-ai-models`,
 		filter: filterJsonFiles,
+		metadataFilter: new CloudflareMetadataAdder({ tag: "ai" }),
 	},
 	{
 		path: `${cloudflareDocsDir}/src/content/docs/durable-objects`,
 		filter: filterMdxFiles,
+		metadataFilter: new CloudflareMetadataAdder({ tag: "durable-objects" }),
 	},
 	{
 		path: `${cloudflareDocsDir}/src/content/docs/d1`,
 		filter: filterMdxFiles,
+		metadataFilter: new CloudflareMetadataAdder({ tag: "d1" }),
 	},
 	{
 		path: `${cloudflareDocsDir}/src/content/docs/kv`,
 		filter: filterMdxFiles,
+		metadataFilter: new CloudflareMetadataAdder({ tag: "kv" }),
 	},
 	{
 		path: `${cloudflareDocsDir}/src/content/docs/r2`,
 		filter: filterMdxFiles,
+		metadataFilter: new CloudflareMetadataAdder({ tag: "r2" }),
 	},
 	{
 		path: `${cloudflareDocsDir}/src/content/docs/workers-ai`,
 		filter: filterMdxFiles,
+		metadataFilter: new CloudflareMetadataAdder({ tag: "ai" }),
 	},
 	{
 		path: `${cloudflareDocsDir}/src/content/docs/ai-gateway`,
 		filter: filterMdxFiles,
+		metadataFilter: new CloudflareMetadataAdder({ tag: "ai-gateway" }),
 	},
 ];
 
@@ -56,7 +68,13 @@ export async function createCloudflareVectorIndex() {
 		console.log(`Loading documents from ${dirPath}`);
 		if (fs.existsSync(dirPath)) {
 			const docs = await loadDocuments(dirPath, dir.filter);
+			const pipeline = new IngestionPipeline({
+				transformations: [dir.metadataFilter],
+			});
 			console.log(`Loaded ${docs.length} documents from ${dirPath}`);
+			// NOTE - Modifies doc nodes in place... I hope this works
+			await pipeline.run({ documents: docs });
+			console.log("Transformed documents!");
 			documents.push(...docs);
 		} else {
 			console.log(`Directory ${dirPath} does not exist`);
