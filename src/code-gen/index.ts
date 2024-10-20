@@ -12,6 +12,7 @@ import {
 	saveOutput,
 } from "./utils/output-manager";
 import { visualizeTrace } from "./utils/visualize-trace";
+
 dotenv.config();
 
 const terminal = readline.createInterface({
@@ -23,10 +24,10 @@ const messages: CoreMessage[] = [];
 
 async function main() {
 	const timings: { [key: string]: number } = {};
-	const startTime = Date.now();
 
 	const idea = await terminal.question("What is your idea for an api?");
 
+	const startTime = Date.now();
 	const planStartTime = Date.now();
 	const plan = await generatePlan(idea);
 	timings.generatePlan = Date.now() - planStartTime;
@@ -71,23 +72,15 @@ async function main() {
 
 	await saveOutput("03-api-routes.ts", apiRoutes.indexTs);
 	await saveOutput("04-seed.ts", seedFile.seedTs);
-	await visualizeTrace(traceId);
 
 	const totalTime = Date.now() - startTime;
 	timings.total = totalTime;
 
-	console.log(`Run completed. Trace ID: ${getCurrentTraceId()}`);
-	console.log("Timing data:");
-	console.log(
-		Object.entries(timings)
-			.map(
-				([key, value]) =>
-					`${key}: ${value < 1000 ? `${value}ms` : `${(value / 1000).toFixed(2)}s`}`,
-			)
-			.join("\n"),
-	);
+	await saveOutput("99-timings.json", JSON.stringify(timings, null, 2));
 
-	await saveOutput("05-timings.json", JSON.stringify(timings, null, 2));
+	await visualizeTrace(traceId);
+
+	console.log(`Run completed. Trace ID: ${getCurrentTraceId()}`);
 }
 
 export async function quickTerminalApp() {
