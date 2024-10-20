@@ -18,7 +18,6 @@ export async function createDrizzleVectorIndex() {
 	const drizzleDocsDirectory = join(
 		__dirname,
 		"..",
-		"..",
 		"drizzle-orm-docs",
 		"src",
 		"content",
