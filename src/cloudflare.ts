@@ -5,6 +5,7 @@ import type { Document, VectorStoreIndex } from "llamaindex";
 import { STORAGE_DIR } from "./constants";
 import {
 	createVectorIndex,
+	filterJsonFiles,
 	filterMdxFiles,
 	loadDocuments,
 	queryStore,
@@ -14,38 +15,36 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const cloudflareDocsDir = `${__dirname}/cloudflare-docs`;
+
 // Array of directories to load documents from
 const docsDirectories = [
 	{
-		path: join(
-			__dirname,
-			"../../cloudflare-docs/src/content/workers-ai-models",
-		),
-		filter: (documents: Document[]) =>
-			documents.filter((doc) => doc.metadata.file_name?.endsWith(".json")),
+		path: `${cloudflareDocsDir}/src/content/workers-ai-models`,
+		filter: filterJsonFiles,
 	},
 	{
-		path: `${__dirname}/../../cloudflare-docs/src/content/docs/durable-objects`,
+		path: `${cloudflareDocsDir}/src/content/docs/durable-objects`,
 		filter: filterMdxFiles,
 	},
 	{
-		path: `${__dirname}/../../cloudflare-docs/src/content/docs/d1`,
+		path: `${cloudflareDocsDir}/src/content/docs/d1`,
 		filter: filterMdxFiles,
 	},
 	{
-		path: `${__dirname}/../../cloudflare-docs/src/content/docs/kv`,
+		path: `${cloudflareDocsDir}/src/content/docs/kv`,
 		filter: filterMdxFiles,
 	},
 	{
-		path: `${__dirname}/../../cloudflare-docs/src/content/docs/r2`,
+		path: `${cloudflareDocsDir}/src/content/docs/r2`,
 		filter: filterMdxFiles,
 	},
 	{
-		path: `${__dirname}/../../cloudflare-docs/src/content/docs/workers-ai`,
+		path: `${cloudflareDocsDir}/src/content/docs/workers-ai`,
 		filter: filterMdxFiles,
 	},
 	{
-		path: `${__dirname}/../../cloudflare-docs/src/content/docs/ai-gateway`,
+		path: `${cloudflareDocsDir}/src/content/docs/ai-gateway`,
 		filter: filterMdxFiles,
 	},
 ];

@@ -4,20 +4,26 @@ import {
 	MetadataMode,
 	type NodeWithScore,
 	Ollama,
+	OpenAI,
 	Settings,
 	SimpleDirectoryReader,
 	VectorStoreIndex,
 	storageContextFromDefaults,
 } from "llamaindex";
 
-const ollama = new Ollama({
+export const ollama = new Ollama({
 	model: "llama3.1",
 	options: { temperature: 0.75 },
 });
 
-// Use Ollama LLM and Embed Model
-Settings.llm = ollama;
-// Xenova/all-MiniLM-L6-v2
+export const openai = new OpenAI({
+	model: "gpt-4o-mini",
+});
+
+// Use Ollama LLM
+// Settings.llm = ollama;
+
+// Embed model defaults to Xenova/all-MiniLM-L6-v2
 Settings.embedModel = new HuggingFaceEmbedding();
 
 // Agent debugging
@@ -60,12 +66,13 @@ export async function loadVectorIndex(storageDir: string) {
 	const storageContext = await storageContextFromDefaults({
 		persistDir: storageDir,
 	});
+	console.log(storageContext);
 	if (!storageContext.vectorStores.TEXT) {
 		throw new Error("No vector store loaded");
 	}
-	const vectorIndex = await VectorStoreIndex.fromVectorStores(
-		storageContext.vectorStores,
-	);
+	const vectorIndex = await VectorStoreIndex.fromDocuments([], {
+		storageContext,
+	});
 	return vectorIndex;
 }
 
