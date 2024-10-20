@@ -1,5 +1,5 @@
-import { STORAGE_DIR } from "@/constants";
-import { loadVectorIndex } from "@/shared";
+import { STORAGE_DIR } from "@/rag/constants";
+import { loadVectorIndex } from "@/rag/shared";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { activeModel } from "./models";

@@ -8,11 +8,12 @@
 		"build": "tsc",
 		"codegen": "tsx src/code-gen/index.ts",
 		"trace": "tsx src/code-gen/utils/scripts/latest-trace.ts",
+		"index:cloudflare": "tsx src/rag/scripts/index-cloudflare.ts",
 		"start": "rm -rf dist && tsup && node dist/index.js",
 		"dev": "tsup --watch && node dist/index.js",
 		"format": "biome check . --write",
 		"lint": "biome lint .",
-		"agent": "tsx src/agent.ts",
+		"agent": "tsx src/rag/agent-experiment.ts",
 		"typecheck": "tsc --noEmit"
 	},
 	"keywords": [],

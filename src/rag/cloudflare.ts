@@ -20,7 +20,7 @@ import { CloudflareMetadataAdder } from "./transformations";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const cloudflareDocsDir = `${__dirname}/../cloudflare-docs`;
+const cloudflareDocsDir = `${__dirname}/../../cloudflare-docs`;
 
 // Array of directories to load documents from
 const docsDirectories = [
