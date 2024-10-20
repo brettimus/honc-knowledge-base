@@ -1,15 +1,15 @@
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
-import path, { basename } from "node:path";
+import path from "node:path";
 import { BASE_OUTPUT_DIR } from "./constants";
 let currentTraceId: string | null = null;
 
-function generateTraceId(): string {
-	return crypto.randomBytes(16).toString("hex");
+function generateTraceId(appName = "app"): string {
+	return `${appName}-${crypto.randomBytes(16).toString("hex")}`;
 }
 
-export function initializeTraceId(): string {
-	currentTraceId = generateTraceId();
+export function initializeTraceId(appName?: string): string {
+	currentTraceId = generateTraceId(appName);
 	return currentTraceId;
 }
 
@@ -23,7 +23,8 @@ function getOutputDir(): string {
 }
 
 function getFileName(stepName: string): string {
-	return basename(stepName) === stepName ? `${stepName}.json` : stepName;
+	const hasExtension = /\.[^.]+$/.test(stepName);
+	return hasExtension ? stepName : `${stepName}.json`;
 }
 
 export async function saveOutput(

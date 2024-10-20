@@ -22,9 +22,14 @@ Your responses should help sketch out a prototype of the api.
 Do not write actual code, just something like a specification.
 I will take care of writing the implementation.
 
+Create CRUD endpoints for each resource where it makes sense.
+I want to be able to create, read, update, and delete each resource.
+
 Be thorough. Think step by step.
 
 Do not include D1 as a Cloudflare binding, I already have it installed.
+
+If you want to use validation, use the Zod typescript library.
 
 Do not implement authentication unless specifically asked for.
 
@@ -39,6 +44,7 @@ ${idea}
 		model: activeModel,
 		schema: z.object({
 			reasoning: z.string(),
+			appName: z.string(),
 			databaseSchema: z.string(),
 			apiRoutes: z.string(),
 			cloudflareBindings: z

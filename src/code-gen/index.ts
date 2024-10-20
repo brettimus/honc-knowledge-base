@@ -5,12 +5,13 @@ import { generateApiRoutes } from "./api-routes";
 import { activeModel } from "./models";
 import { generatePlan } from "./planner";
 import { generateSchema } from "./schema";
-import { visualizeTrace } from "./utils/latest-trace";
+import { generateSeed } from "./seed";
 import {
 	getCurrentTraceId,
 	initializeTraceId,
 	saveOutput,
 } from "./utils/output-manager";
+import { visualizeTrace } from "./utils/visualize-trace";
 dotenv.config();
 
 const terminal = readline.createInterface({
@@ -21,14 +22,15 @@ const terminal = readline.createInterface({
 const messages: CoreMessage[] = [];
 
 async function main() {
-	const traceId = initializeTraceId();
-	console.log(`Starting new run with trace ID: ${traceId}`);
-
 	const idea = await terminal.question("What is your idea for an api?");
-	await saveOutput("00-initial-idea", idea);
 
 	const plan = await generatePlan(idea);
+
+	const traceId = initializeTraceId(plan.appName);
+	console.log(`Starting new run with trace ID: ${traceId}`);
+
 	console.log(plan);
+	await saveOutput("00-initial-idea", idea);
 
 	await saveOutput("01-initial-plan", plan);
 
@@ -36,20 +38,29 @@ async function main() {
 
 	await saveOutput("02-db-schema.ts", dbSchema.dbSchemaTs);
 
-	const apiRoutes = await generateApiRoutes({
-		dbSchema: dbSchema.dbSchemaTs,
-		apiPlan: plan.apiRoutes,
-	});
-
-	await saveOutput("03-api-routes.ts", apiRoutes.indexTs);
-
-	// TODO (parallel)
-	// - Create seed.ts
-	// - Create index.ts
+	// TODO
 	// - [optional] Modify wrangler.toml
+	//    * Note the binding names
+
+	// TODO
 	// - [optional] Packages
 	//   * Modify package.json
+	//   * Resolve the package names for use in index.ts
+	//   * Install instructions
 
+	// NOTE: These are parallel to reduce overall latency
+	const [apiRoutes, seedFile] = await Promise.all([
+		generateApiRoutes({
+			dbSchema: dbSchema.dbSchemaTs,
+			apiPlan: plan.apiRoutes,
+		}),
+		generateSeed({
+			dbSchema: dbSchema.dbSchemaTs,
+		}),
+	]);
+
+	await saveOutput("03-api-routes.ts", apiRoutes.indexTs);
+	await saveOutput("04-seed.ts", seedFile.seedTs);
 	await visualizeTrace(traceId);
 
 	console.log(`Run completed. Trace ID: ${getCurrentTraceId()}`);
