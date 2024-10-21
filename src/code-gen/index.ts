@@ -2,6 +2,7 @@ import * as readline from "node:readline/promises";
 import { type CoreMessage, streamText } from "ai";
 import dotenv from "dotenv";
 import { generateApiRoutes } from "./api-routes";
+import { addCloudflareBindings } from "./cloudflare-bindings";
 import { activeModel } from "./models";
 import { generatePlan } from "./planner";
 import { generateSchema } from "./schema";
@@ -108,6 +109,32 @@ async function main() {
 	timings.generateApiRoutes = Date.now() - apiRoutesStartTime;
 	await saveOutput("04-api-routes-reasoning.txt", apiRoutes.reasoning);
 	await saveOutput("04-api-routes.ts", apiRoutes.indexTs);
+
+	// Add Cloudflare bindings
+	if (plan.cloudflareBindings?.bindings.length) {
+		const cloudflareBindingsStartTime = Date.now();
+		const cloudflareBindings = await addCloudflareBindings({
+			reasoning: plan.cloudflareBindings?.reasoning ?? "",
+			bindings: plan.cloudflareBindings?.bindings ?? [],
+			apiRoutes: apiRoutes.indexTs,
+		});
+		timings.addCloudflareBindings = Date.now() - cloudflareBindingsStartTime;
+
+		await saveOutput("05-cf-bindings-prompt.txt", cloudflareBindings.prompt);
+		await saveOutput(
+			"05-cf-bindings-reasoning.txt",
+			cloudflareBindings.reasoning,
+		);
+		await saveOutput("05-cf-bindings.ts", cloudflareBindings.indexTs);
+		await saveOutput(
+			"05-cf-bindings-documentation",
+			cloudflareBindings.documentation,
+		);
+		await saveOutput(
+			"05-cf-bindings-documentation-content.txt",
+			cloudflareBindings.documentation.content,
+		);
+	}
 
 	const totalTime = Date.now() - startTime;
 	timings.total = totalTime;
